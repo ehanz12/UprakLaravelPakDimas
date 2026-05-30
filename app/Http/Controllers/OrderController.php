@@ -51,6 +51,7 @@ class OrderController extends Controller
 
            
             if ($product->stock < $request->quantity) {
+                DB::rollBack();
                 return response()->json([
                     'success' => false,
                     'message' => 'Stok produk tidak mencukupi. Stok saat ini: ' . $product->stock

@@ -24,10 +24,21 @@ class AuthController extends Controller
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
-    public function logout()
+    public function index()
     {
-        // Log out the user
-        auth()->logout();
+        $users = \App\Models\User::all();
+        return response()->json([
+            'message' => 'Daftar semua user',
+            'users'   => $users,
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        // Revoke the Sanctum token
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
 
         // Return a success response
         return response()->json(['message' => 'Logout successful']);
